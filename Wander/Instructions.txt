@@ -1,0 +1,4 @@
+1. Make a new vs solution empty project
+2. git clone repository to machine
+3. you create the project solution into the folder repository
+4. If folders and files have been created, you right click on them and include them in project
