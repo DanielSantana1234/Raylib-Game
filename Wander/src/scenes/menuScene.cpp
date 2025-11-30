@@ -1,29 +1,28 @@
 ﻿#include "menuScene.h"
+#include "..\systems\inputManager.h"
 
 std::string printHello() {
 	return "Hello from menuScene!";
 }
 
 void strt_menu() {
+	InitWindow(1920, 1080, "Wander");
+	ToggleFullscreen();
+
 	int currentMonitor = GetCurrentMonitor();
 	int monitorWidth = GetMonitorWidth(currentMonitor);
 	int monitorHeight = GetMonitorHeight(currentMonitor);
 
-	// InitWindow(800, 450, "Wander");
-	InitWindow(monitorWidth, monitorHeight, "Wander");
-	ToggleFullscreen();
-
 	bool isFullscreen = false;
 
 	// For the height as well as width of the game art
-	Texture2D background = LoadTexture("C:\\Users\\danie\\Downloads\\Wander\\Wander\\assets\\sprites\\Sprite-0001.png");
+	Image image = LoadImage("assets/sprites/Sprite-0001.png");
+	Texture2D background = LoadTextureFromImage(image);
 
-	// Creating a render texture at the pixel art resolution
-	// RenderTexture2D target = LoadRenderTexture(gameWidth, gameHeight);
-	// SetTextureFilter(target.texture, TEXTURE_FILTER_POINT);
+	Button playButton("assets/sprites/Play-button.png", { 1920 / 2.0f, 1080 / 2.0f }, 10.0f);
 
-	// Image image = LoadImage("C:\\Users\\danie\\Downloads\\Wander\\Wander\\assets\\sprites\\Sprite-0001.png");
-	// Texture2D background = LoadTexture("C:\\Users\\danie\\Downloads\\Wander\\Wander\\assets\\sprites\\Sprite-0001.png");
+	bool playButtonAction = false;
+
 	if (background.id == 0) {
 		std::cerr << "error while trying to load the texture!" << std::endl;
 	}
@@ -31,33 +30,37 @@ void strt_menu() {
 
 	int gameWidth = background.width;
 	int gameHeight = background.height;
-	
 
 	SetTargetFPS(60);
 
-	std::cout << "Monitor Width: " << monitorWidth << "\n";
-	std::cout << "Monitor Height: " << monitorHeight << "\n";
-
 	while (!WindowShouldClose()) {
+		// Updating mouse pointer position
+		Vector2 mousePoint = GetMousePosition();
+		playButtonAction = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+
 		if (IsKeyPressed(KEY_F)) {
 			if (!isFullscreen) {
 				ToggleFullscreen();
 				SetWindowSize(800, 640);
 			}
 			else {
-				SetWindowSize(GetScreenWidth(), GetScreenHeight());
+				// SetWindowSize(GetMonitorWidth(currentMonitor), GetMonitorHeight(currentMonitor));
+				std::cout << "Monitor Width: " << monitorWidth << "\n";
+				std::cout << "Monitor Height: " << monitorHeight << "\n";
+				SetWindowSize(1920, 1080);
 				ToggleFullscreen();
 			}
 			isFullscreen = !isFullscreen;
 		}
 
-		/*BeginTextureMode(target);
-		ClearBackground(WHITE);
-		DrawTexture(target.texture, 0, 0, WHITE);
-		EndTextureMode();*/
+		if (playButton.isPressed(mousePoint, playButtonAction)) {
+			std::cout << "It works!" << std::endl;
+		}
 
 		BeginDrawing();
 		ClearBackground(WHITE);
+
+		// Drawing the background
 		DrawTexturePro(
 			background,
 			Rectangle{ 0, 0, (float)gameWidth, (float)gameHeight}, // So the part of the texture to draw
@@ -66,7 +69,9 @@ void strt_menu() {
 			0.0f,
 			WHITE
 		);
-		//DrawTextureEx(background, { 0, 0 }, 0, 7, WHITE);
+
+		playButton.DrawButton();
+
 		EndDrawing();
 	}
 

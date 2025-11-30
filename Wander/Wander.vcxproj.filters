@@ -81,6 +81,10 @@
   <ItemGroup>
     <None Include="LICENSE" />
     <None Include="README.md" />
+    <None Include="x64\Debug\raylib.dll" />
+    <None Include="x64\Debug\Wander.exe" />
+    <None Include="x64\Debug\Wander.pdb" />
+    <None Include="x64\Debug\glfw3.dll" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Instructions.txt" />
@@ -90,6 +94,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="src\scenes\Sprite-0001.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\sprites\Play-button.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
